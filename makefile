@@ -1,2 +1,0 @@
-frame:
-	javac BrickBreakFrame.java
