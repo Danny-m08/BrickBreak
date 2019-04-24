@@ -5,8 +5,6 @@ import javafx.scene.*;
 
 public class Game extends JFrame{
 
-
-
     // This class is the main Game loop
     JMenuBar menuBar;
     Brick [] bricks;
@@ -14,40 +12,33 @@ public class Game extends JFrame{
 
 	public Game(){
 		super("Brick Break");
-		super.setSize(800,650);
+		super.setSize(1200,800);
 		super.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
-		board = new Board();
+		super.setResizable(false);
 
 		menuBar = new JMenuBar();
 
-
-		bricks = new Brick[10];
-		//for(int i = 0; i < bricks.length; ++i)
-		//	bricks[i] = new Brick();
-//
-
-
 		JMenu newGame = new JMenu("New Game");
 		JMenuItem startGame = new JMenuItem("Start New Game");
-//		JFXpanel fxPanel = new JFXpanel();
-//		initializeFX(fxPanel());
 
 		startGame.setMnemonic('s');
-
-
-
 		startGame.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent event){
 				JInternalFrame gameFrame = new JInternalFrame("Welcome");
+				gameFrame.setBounds(500,300,200,100);
 				gameFrame.setVisible(true);
 				System.out.println("Starting new game!");
 			}
 		});
 
-
 		newGame.add(startGame);
 		menuBar.add(newGame);
+
+		board = new Board();
+		bricks = new Brick[10];
+		//for(int i = 0; i < bricks.length; ++i)
+		//	bricks[i] = new Brick();
+
 		super.add(board);
 	//	super.add(bricks[i]);
 		
@@ -62,7 +53,7 @@ public class Game extends JFrame{
 
 
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+        //System.out.println("Hello World!");
         Game brickBreak = new Game();
         brickBreak.setVisible(true);
     }
