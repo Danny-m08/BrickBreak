@@ -27,7 +27,6 @@ public class Game extends JFrame{
 		startGame.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent event){
 				board.init();
-				System.out.println("Starting new game!");
 			}
 		});
 
@@ -35,7 +34,7 @@ public class Game extends JFrame{
 		menuBar.add(newGame);
 
 
-		bricks = new Brick[10];
+		//bricks = new Brick[10];
 		//for(int i = 0; i < bricks.length; ++i)
 		//	bricks[i] = new Brick();
 
