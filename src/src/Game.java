@@ -16,6 +16,8 @@ public class Game extends JFrame{
 		super.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		super.setResizable(false);
 
+		board = new Board();
+
 		menuBar = new JMenuBar();
 
 		JMenu newGame = new JMenu("New Game");
@@ -24,9 +26,7 @@ public class Game extends JFrame{
 		startGame.setMnemonic('s');
 		startGame.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent event){
-				JInternalFrame gameFrame = new JInternalFrame("Welcome");
-				gameFrame.setBounds(500,300,200,100);
-				gameFrame.setVisible(true);
+				board.init();
 				System.out.println("Starting new game!");
 			}
 		});
@@ -34,7 +34,7 @@ public class Game extends JFrame{
 		newGame.add(startGame);
 		menuBar.add(newGame);
 
-		board = new Board();
+
 		bricks = new Brick[10];
 		//for(int i = 0; i < bricks.length; ++i)
 		//	bricks[i] = new Brick();

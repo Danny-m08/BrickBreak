@@ -1,6 +1,7 @@
 import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,46 +12,112 @@ public class Board extends JPanel implements KeyListener, ActionListener {
 
 	private Color[] colors = { Color.red, Color.orange, Color.yellow, Color.green, Color.blue, Color.magenta };
 	private int index = -1;
-	private boolean playing = false;
-	private int numBricks = 32;
-	private int score = 0;
+	private boolean playing;
+	private int numBricks;
+	private int score;
 
-	private int paddleX = 500;
-	private int paddleY = (int)Math.floor(737*.9);
-	private int paddleW = 200;
-	private int paddleH = 20;
+	private int paddleX;
+	private int paddleY;
+	private int paddleW;
+	private int paddleH;
 
-	private int ballX = (int) Math.floor(1194/2);
-	private int ballY = (int) Math.floor(737 * .7);
-	private int ballR = 40;
-	private int ballXdir = -1;
-	private int ballYdir = -2;
+	private int ballX;
+	private int ballY;
+	private int ballR;
+	private int ballXdir;
+	private int ballYdir;
+
+	private Timer timer;
+	private int delay = 4;
 
 	private JLabel pressSpace;
-
+	private JLabel gameOver;
 
 	public Board() {
 		addKeyListener(this);
 		setFocusable(true);
 		setFocusTraversalKeysEnabled(false);
+		timer = new Timer(delay, this);
 
-		pressSpace = new JLabel("Press Space to Play", SwingConstants.CENTER);
+		// Janky way of getting the text into the middle of the screen lol
+		pressSpace = new JLabel("                  Press Space to Play");
 		pressSpace.setFont(new Font("Serif", Font.BOLD, 72));
 		pressSpace.setForeground(Color.WHITE);
-		pressSpace.setVisible(true);
-		pressSpace.setVerticalTextPosition(JLabel.CENTER);
-		add(pressSpace, BorderLayout.CENTER);
 
+		gameOver = new JLabel("                    GAME OVER");
+		gameOver.setFont(new Font("Serif", Font.BOLD, 72));
+		gameOver.setForeground(Color.RED);
+
+		BoxLayout box = new BoxLayout(this, BoxLayout.Y_AXIS);
+		setLayout(box);
+
+		add(Box.createVerticalGlue());
+		add(pressSpace);
+		add(gameOver);
+		add(Box.createVerticalGlue());
+
+		init();
 	}
 
 	public void init() {
+		index = -1;
+		playing = false;
+		numBricks = 32;
+		score = 0;
+
+		paddleX = 500;
+		paddleY = (int)Math.floor(737*.9);
+		paddleW = 200;
+		paddleH = 20;
+
+		ballX = (int) Math.floor(1194/2);
+		ballY = (int) Math.floor(737 * .7);
+		ballR = 40;
+		ballXdir = -1;
+		ballYdir = -2;
+
+		gameOver.setVisible(false);
+		pressSpace.setVisible(true);
+		repaint();
+		timer.start();
 
 	}
 
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		timer.start();
 
+		if (playing) {
+			ballX += ballXdir;
+			ballY += ballYdir;
+
+			// Ball hits top or sides of screen
+			// Reverse direction
+			if (ballX <= 0 || ballX >= 1154) {
+				ballXdir = -ballXdir;
+			}
+			if (ballY <= 0) {
+				ballYdir = -ballYdir;
+			}
+			if (ballY >= 737) {
+				// YOU LOSE
+				gameOver.setVisible(true);
+				playing = false;
+				timer.stop();
+			}
+
+			// Ball Hits Paddle
+			if (new Rectangle(ballX, ballY, ballR, ballR).intersects(new Rectangle(paddleX, paddleY, paddleW, paddleH))) {
+				ballYdir = -ballYdir;
+			}
+
+
+
+
+		}
+
+		repaint();
 	}
 
 	@Override
@@ -59,7 +126,8 @@ public class Board extends JPanel implements KeyListener, ActionListener {
 			if (paddleX >= 983) {
 				paddleX = 983;
 			} else {
-				paddleX++;
+				paddleX+=20;
+				//repaint();
 			}
 		}
 
@@ -67,7 +135,8 @@ public class Board extends JPanel implements KeyListener, ActionListener {
 			if (paddleX <= 11) {
 				paddleX = 11;
 			} else {
-				paddleX--;
+				paddleX-=20;
+				//repaint();
 			}
 		}
 
