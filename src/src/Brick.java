@@ -26,7 +26,6 @@ public class Brick {
 				grid[i][j] = 1;
 			}
 		}
-
 	}
 
 	public void draw(Graphics g) {
