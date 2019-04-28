@@ -1,4 +1,5 @@
-import javafx.scene.shape.Rectangle;
+// Brick Break Java
+// Amber Mickler & Daniel Marquez
 
 import java.awt.*;
 

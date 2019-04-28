@@ -1,3 +1,6 @@
+// Brick Break Java
+// Amber Mickler & Danny Marquez
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;

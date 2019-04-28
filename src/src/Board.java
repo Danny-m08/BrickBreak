@@ -1,7 +1,7 @@
-import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
+// Brick Break Java
+// Amber Mickler & Danny Marquez
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
