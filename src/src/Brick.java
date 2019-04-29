@@ -6,7 +6,6 @@ import java.awt.*;
 public class Brick {
     // This class represents the whole group of brick objects
 
-	// I didn't like the default Orange and Blue colors lol
 	private Color[] colors = { Color.red, new Color(255,140,0), Color.yellow, Color.green, new Color(30,144,255), Color.magenta };
 	public int grid[][];
 	public int brickWidth = 142;
@@ -28,6 +27,7 @@ public class Brick {
 			}
 		}
 	}
+
 
 	public void draw(Graphics g) {
 		x = 11;

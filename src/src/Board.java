@@ -7,11 +7,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.File;
 
 public class Board extends JPanel implements KeyListener, ActionListener {
 
 	private boolean playing;
-	private int score;
+	private int score;		//keep track of score
 
 	private int paddleX;
 	private int paddleY;
@@ -28,7 +29,7 @@ public class Board extends JPanel implements KeyListener, ActionListener {
 
 	private Timer timer;
 	private int delay = 6;
-	private int wins = 0;
+	private int wins = 0;		//keep track of wins
 
 	private Brick bricks;
 	private int winCondition;
@@ -38,6 +39,27 @@ public class Board extends JPanel implements KeyListener, ActionListener {
 	private JLabel pressSpace;
 	private JLabel gameOver;
 	private JLabel scoreText;
+	private JLabel pause;
+
+
+	public int [] getBoardStatus(){		//returns array of game data
+		int brickCount = bricks.rows * bricks.cols;
+		int [] data = new int[brickCount + 3];
+		int dit = 1;
+		data[0] = brickCount;
+		for(int i = 0; i < bricks.grid.length; ++i)
+			for(int it = 0; it < bricks.grid[i].length; ++it, ++dit)
+				data[dit] = bricks.grid[i][it];
+			
+		data[dit] = score;
+		data[++dit] = wins;
+		return data;
+
+		}
+
+	public void setScoreText(int score){
+		scoreText.setText(" " + score );
+	}
 
 	public Board() {
 		addKeyListener(this);
@@ -58,6 +80,13 @@ public class Board extends JPanel implements KeyListener, ActionListener {
 		scoreText.setFont(new Font("Serif", Font.BOLD, 32));
 		scoreText.setForeground(Color.WHITE);
 
+		pause = new JLabel("Press Space to Pause");
+		pause.setFont(new Font("Serif", Font.BOLD, 16));
+		pause.setForeground(Color.WHITE);
+		pause.setVisible(false);
+		
+
+
 		BoxLayout box = new BoxLayout(this, BoxLayout.Y_AXIS);
 		setLayout(box);
 
@@ -65,15 +94,37 @@ public class Board extends JPanel implements KeyListener, ActionListener {
 		add(Box.createVerticalGlue());
 		add(pressSpace);
 		add(gameOver);
+
 		add(Box.createVerticalGlue());
+		add(pause);
 
 		init();
 	}
 
+	public void setGameData(int size, int [] board, int score, int wins){
+		this.wins = wins;
+		init();
+		int iter = 0;
+		int completedBlocks = 0;
+		for(int i = 0; i < bricks.rows; ++i)
+			for(int it = 0; it < 8; ++it, ++iter){
+				bricks.grid[i][it] = board[iter];
+				if(board[iter] == 0)
+					completedBlocks ++;
+				}
+		this.score = score;
+		repaint();
+		scoreText.setText(" " + score);
+		winCondition = winCondition - completedBlocks;
+	//	System.out.println("win condition " + winCondition);
+	}
+
+
+
 	public void init() {
 		playing = false;
 		score = 0;
-
+		pause.setVisible(false);
 		paddleX = 500;
 		paddleY = (int)Math.floor(737*.9);
 		paddleW = 200;
@@ -120,9 +171,17 @@ public class Board extends JPanel implements KeyListener, ActionListener {
 			if (ballY >= 737) {
 				// YOU LOSE
 				gameOver.setVisible(true);
+				pressSpace.setVisible(true);
+				pause.setVisible(false);
 				playing = false;
 				timer.stop();
 				wins = 0;
+				File file = new File("lastGame.txt");
+				if(file.exists()){
+					try{file.delete();}
+					catch(Exception ex){	System.out.println("Couldn't delete file"); }
+					}
+
 			}
 
 			// If no more bricks left
@@ -201,9 +260,9 @@ public class Board extends JPanel implements KeyListener, ActionListener {
 	public void keyPressed(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
 			if (paddleX >= 983) {
-				paddleX = 983;
+				paddleX = 983;		//keep it in place
 			} else {
-				paddleX+=20;
+				paddleX+=50;		//move to the right
 			}
 			paddleDir = 1;
 		}
@@ -212,19 +271,30 @@ public class Board extends JPanel implements KeyListener, ActionListener {
 			if (paddleX <= 11) {
 				paddleX = 11;
 			} else {
-				paddleX-=20;
+				paddleX-=50;	//move to the left
 			}
-			paddleDir = -1;
+			paddleDir = -1;		//indicate left movement
 		}
-
+		//pause and play using space button
 		if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-			playing = true;
-			pressSpace.setVisible(false);
-		}
+			if(playing == true){
+				playing = false;
+				pressSpace.setVisible(true);
+				pause.setVisible(false);
+			}
+			else{
 
-		//if (e.getKeyCode() == /* PAUSE KEY */) {}
-			// if playing, timer stop, playing false
-			// if !playing, timer start, playing true
+				if(gameOver.isVisible())
+					init();
+
+				else
+					pause.setVisible(true);
+				
+				playing = true;
+				pressSpace.setVisible(false);
+				pause.setVisible(true);
+			}
+		}
 	}
 
 	@Override
@@ -251,5 +321,7 @@ public class Board extends JPanel implements KeyListener, ActionListener {
 		g.fillRect(paddleX, paddleY, paddleW, paddleH);
 
 	}
+
+
 
 }
