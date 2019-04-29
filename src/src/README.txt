@@ -38,4 +38,14 @@ How to save
 
 Division of work:
 	
-	D
+	Amber Mickler:
+		-Created game logic in
+		-Implemented animations of ball (ball and paddle motion)
+		-Created board class UI
+
+
+	Daniel Marquez:
+		-Created the main window in the Game class UI
+		-Created the save game and continue options
+		-Implemented helper functions in Board.java to help with continue option
+		-Created README
