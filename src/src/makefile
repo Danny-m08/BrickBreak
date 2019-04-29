@@ -8,4 +8,4 @@ board: Board.java
 	javac Board.java
 
 bundle: *.class *.java Manifest.txt
-	jar cfm BrickBreak.jar Manifest.txt *.class *.java 
+	jar cfm classproj.jar Manifest.txt *.class *.java README.txt
