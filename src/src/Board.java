@@ -110,6 +110,8 @@ public class Board extends JPanel implements KeyListener, ActionListener {
 
 			// Ball hits top or sides of screen
 			if (ballX <= 0 || ballX >= 1154) {
+				if (ballX > 1154) { ballX = 1154; }
+				if (ballX < 0) { ballX = 0; }
 				ballXdir = -ballXdir;
 			}
 			if (ballY <= 0) {
@@ -126,13 +128,14 @@ public class Board extends JPanel implements KeyListener, ActionListener {
 			// If no more bricks left
 			if (winCondition == 0) {
 				wins++;
-				score+=100;
+				int temp = score + 100;		// Lazy workaround because init resets score to 0
 				init();
+				score = temp;
 			}
 
 			// Start Collisions Detection
 			Rectangle ball = new Rectangle(ballX, ballY, ballR, ballR);
-			Rectangle paddle = new Rectangle(paddleX, paddleY, paddleW, paddleH);
+			Rectangle paddle = new Rectangle(paddleX, paddleY, paddleW, 1);
 
 			// Ball Hits Paddle
 			if (ball.intersects(paddle)) {

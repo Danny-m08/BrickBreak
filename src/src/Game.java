@@ -25,6 +25,7 @@ public class Game extends JFrame{
 
 		JMenu newGame = new JMenu("New Game");
 		JMenuItem startGame = new JMenuItem("Start New Game");
+		startGame.setMnemonic('n');
 
 		startGame.setMnemonic('s');
 		startGame.addActionListener(new ActionListener(){
