@@ -22,7 +22,7 @@ How to Save a game session:
 
 	NOTE:	
 		If you lose the game of a saved game, you must restart from the beginning
-		Saving a new game session will overwrite any previous saved game sessions
+		Saving a new game session will overwrite any previously saved game sessions
 
 
 How to Pick up from your last saved game:
@@ -32,7 +32,7 @@ How to Pick up from your last saved game:
 	NOTE:
 		This option is only present when the program has detected a previously saved game
 
-How to save 
+
 
 
 
